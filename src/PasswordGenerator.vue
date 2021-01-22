@@ -2,19 +2,24 @@
 	<div id="password-generator-app">
 		<form>
 			<label for="pass-length">Password length: </label>
-			<input id="pass-length" type="number" v-model="passwordLength" min="4" max="12" />
+			<input id="pass-length" type="number" v-model="passwordLength" min="4" max="12" @change="removePassword" />
 			<br/>
 			<label for="pass-uppercase">Include uppercase letters: </label>
-			<input id="pass-uppercase" type="checkbox" v-model="passwordUppercase" />
+			<input id="pass-uppercase" type="checkbox" v-model="passwordUppercase" @change="removePassword" />
 			<br/>
 			<label for="pass-lowercase">Include lowercase letters: </label>
-			<input id="pass-lowercase" type="checkbox" v-model="passwordLowercase" />
+			<input id="pass-lowercase" type="checkbox" v-model="passwordLowercase" @change="removePassword" />
 			<br/>
 			<label for="pass-numbers">Include numbers: </label>
-			<input id="pass-numbers" type="checkbox" v-model="passwordNumbers" />
+			<input id="pass-numbers" type="checkbox" v-model="passwordNumbers" @change="removePassword" />
 			<br/>
 			<label for="pass-symbols">Include symbols: </label>
-			<input id="pass-symbols" type="checkbox" v-model="passwordSymbols" />
+			<input id="pass-symbols" type="checkbox" v-model="passwordSymbols" @change="removePassword" />
+			<br/>
+			<div id="generated-password" v-if="generatedPassword">
+				Your password: {{ generatedPassword }}
+			</div>
+			<button type="button" @click="generatePassword">Generate password</button>
 		</form>
 	</div>
 </template>
@@ -27,12 +32,23 @@ export default {
 			passwordUppercase: false,
 			passwordLowercase: false,
 			passwordNumbers: false,
-			passwordSymbols: false
+			passwordSymbols: false,
+			generatedPassword: '',
+		}
+	},
+	methods: {
+		generatePassword() {
+			this.generatedPassword = '';
+		},
+		removePassword() {
+			this.generatedPassword = '';
 		}
 	}
 }
 </script>
 
 <style scoped>
-
+#generated-password {
+	margin: 10px 0;
+}
 </style>

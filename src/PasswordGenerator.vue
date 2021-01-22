@@ -16,8 +16,10 @@
 			<label for="pass-symbols">Include symbols: </label>
 			<input id="pass-symbols" type="checkbox" v-model="options.passwordSymbols" @change="removePassword" />
 			<br/>
-			<div id="generated-password" v-if="generatedPassword">
-				Your password: {{ generatedPassword }}
+			<div v-if="generatedPassword">
+				<label for="generated-password">Your password: </label>
+				<input id="generated-password" type="text" readonly :value="generatedPassword" />
+				<button type="button" v-if="generatedPassword" @click="copyPasswordToClipboard">Copy to clipboard</button>
 			</div>
 			<div class="error" v-if="error.hasError">
 				{{ error.errorMsg }}
@@ -68,6 +70,18 @@ export default {
 		},
 		removePassword() {
 			this.generatedPassword = '';
+		},
+		copyPasswordToClipboard() {
+			let copiedPassword = document.getElementById('generated-password');
+			copiedPassword.select();
+			copiedPassword.setSelectionRange(0, 99999);
+			copiedPassword.setAttribute('type', 'text');
+
+			try {
+				document.execCommand('copy');
+			} catch (err) {
+				alert('Unable to copy password to clipboard');
+			}
 		},
 		noOptionsSelected() {
 			return Object.values(this.options).every(x => x === false);
